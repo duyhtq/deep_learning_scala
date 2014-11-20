@@ -10,7 +10,7 @@ x = x * 255
 mini = []
 
 i = 0
-N = 50000
+N = 1000
 
 while (i < N):
   ti = numpy.insert(x[i], 0, y[i])

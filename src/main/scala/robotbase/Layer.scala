@@ -1,13 +1,23 @@
-package rb.ai
+package robotbase
 
-import org.apache.spark.mllib.linalg.{Matrices, Vectors}
+abstract class Layer(val f: o.function = o.sigmoid) {
+  var in: Tensor = null
+  var out: Tensor = null
+  var x: Tensor = null
+  var b: Tensor = null
+  var w: Tensor = null
+  var db: Tensor = null
+  var dw: Tensor = null
 
-case class Layer(val l1: Int, val l2: Int) {
-  var x = f.randomVector(l2)
-  var a = f.randomVector(l2)
-  var b = f.randomVector(l2)
-  var w = f.randomMatrix(l1, l2)
-  var db = Vectors.zeros(l2)
-  var dw = Matrices.dense(l1, l2, Vectors.zeros(l1 * l2).toArray)
+  def forward(in: Tensor)
 
+  def backward(loss: Tensor): Tensor
+
+  def update = {
+    val l2 = o.*(C.l2Decay, w)
+    w = o.-(w, o.*(C.learningRate / C.batchSize, o.+(dw, l2)))
+    b = o.-(b, o.*(C.learningRate / C.batchSize, db))
+    db.reset
+    dw.reset
+  }
 }

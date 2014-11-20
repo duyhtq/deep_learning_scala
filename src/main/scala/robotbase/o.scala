@@ -1,46 +1,131 @@
-package rb.ai
+package robotbase
 
 import org.apache.spark.mllib.linalg.{Matrices, Matrix, Vector, Vectors}
 
 import scala.collection.mutable.ArrayBuffer
 
-object f {
+object o {
 
-  object sigmoid {
-    def forward(x: Double): Double = 1 / (1 + Math.exp(-x))
-    def forward(v: Vector): Vector = Vectors.dense(v.toArray.map(x => forward(x)))
-    def backward(x: Double): Double = forward(x) * (1 - forward(x))
-    def backward(v: Vector): Vector = Vectors.dense(v.toArray.map(fx => backward(fx)))
-    def backward(m: Matrix): Matrix = Matrices.dense(m.numRows, m.numCols, m.toArray.map(x => backward(x)))
+  trait function {
+
+    def compute(x: Double): Double
+
+    def differentiate(x: Double): Double
+
+    def apply(x: Tensor): Tensor = {
+      val cx = x.copy
+      update(cx, compute, 0, 0)
+      cx
+    }
+
+    def d(x: Tensor): Tensor = {
+      val cx = x.copy
+      update(cx, differentiate, 0, 0)
+      cx
+    }
+
+    // travel a N-dimensional space
+    def update(x: Tensor, f: (Double) => Double, k: Int, index: Int): Unit = {
+      if (k == x.dim.length) x.update(index, f(x(index)))
+      else for (i <- 0 until x.dim(k))
+        update(x, f, k + 1, index * x.dim(k) + i)
+    }
   }
 
-  object relu {
-    def forward(x: Double): Double = Math.max(0, x)
-    def forward(v: Vector): Vector = Vectors.dense(v.toArray.map(x => forward(x)))
-    def backward(x: Double): Double = if (x == 0) 0 else 1
-    def backward(v: Vector): Vector = Vectors.dense(v.toArray.map(fx => backward(fx)))
+  object sigmoid extends function {
+    def compute(x: Double): Double = 1 / (1 + Math.exp(-x))
+    def differentiate(x: Double): Double = {
+      val t = compute(x)
+      t * (1 - t)
+    }
   }
 
+  object relu extends function {
+    def compute(x: Double): Double = Math.max(0, x)
+    def differentiate(x: Double): Double = if (x > 0) 1 else 0
+  }
 
-  def randomVector(n: Int): Vector = {
+  def argmax(x: Tensor): Int = x.a.indexOf(x.a.max)
+
+  def +(x: Tensor, y: Tensor): Tensor = new Tensor((x.a, y.a).zipped.map(_ + _), x.dim.clone)
+
+  def -(x: Tensor, y: Tensor): Tensor = new Tensor((x.a, y.a).zipped.map(_ - _), x.dim.clone)
+
+  def *+(x: Tensor, y: Tensor): Tensor = new Tensor((x.a, y.a).zipped.map(_ * _), x.dim.clone)
+
+  def *(d: Double, x: Tensor): Tensor = new Tensor(x.a.map(ai => ai * d), x.dim.clone)
+
+  def *(x: Tensor, y: Tensor): Tensor = {
+    // special case: vector x matrix
     val a = ArrayBuffer[Double]()
     var i = 0
-    while (i < n) {
-      a.append((Math.random() - 0.5) * 2)
+    var j = 0
+    var d = 0.0
+    while (j < y.length) {
+      d += x(i) * y(j)
+      j += 1
       i += 1
+      if (i == x.length) {
+        a.append(d)
+        i = 0
+        d = 0
+      }
     }
-    Vectors.dense(a.toArray)
+    new Tensor(a.toArray)
   }
 
-  def randomMatrix(n: Int, m: Int): Matrix = {
-    val a = ArrayBuffer[Double]()
-    var i = n * m
-    while (i > 0) {
-      a.append((Math.random() - 0.5) * 2)
-      i -=1
+  def x(x: Tensor, y: Tensor): Tensor = {
+    // special case: vector x vector
+    val r = new ArrayBuffer[Double]()
+    var j = 0
+    while (j < y.length) {
+      var i = 0
+      while (i < x.length) {
+        r.append(x(i) * y(j))
+        i += 1
+      }
+      j += 1
     }
-    Matrices.dense(n, m, a.toArray)
+    new Tensor(r.toArray, x.length, y.length)
   }
+
+  def t(x: Tensor): Tensor = {
+    // special case: matrix
+    val r = new Tensor(x.dim(1), x.dim(0))
+    var i = 0
+    while (i < r.dim(0)) {
+      var j = 0
+      while (j < r.dim(1)) {
+        val index = i + j * r.dim(0)
+        r.update(index, x(index))
+        j += 1
+      }
+      i += 1
+    }
+    r
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   def *(x: Vector, w: Matrix): Vector = {
     val a = new ArrayBuffer[Double]()
@@ -167,7 +252,7 @@ object f {
     Matrices.dense(a.numRows, a.numCols, r.toArray)
   }
 
-  def **(a: Vector, b: Vector): Vector = {
+  def *+(a: Vector, b: Vector): Vector = {
     val r = new ArrayBuffer[Double]()
     var i = 0
     while (i < a.size) {

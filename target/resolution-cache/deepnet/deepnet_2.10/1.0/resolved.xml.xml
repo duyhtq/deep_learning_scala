@@ -4,7 +4,7 @@
 		module="deepnet_2.10"
 		revision="1.0"
 		status="integration"
-		publication="20141116013902"
+		publication="20141120161647"
 	>
 		<description>
 		DeepNet
@@ -37,5 +37,6 @@
 		<dependency org="org.apache.spark" name="spark-streaming_2.10" rev="1.1.0" conf="compile->default(compile)"/>
 		<dependency org="org.apache.spark" name="spark-streaming-twitter_2.10" rev="1.1.0" conf="compile->default(compile)"/>
 		<dependency org="org.apache.spark" name="spark-graphx_2.10" rev="1.1.0" conf="compile->default(compile)"/>
+		<dependency org="com.typesafe" name="config_2.10" rev="1.2.1" conf="compile->default(compile)"/>
 	</dependencies>
 </ivy-module>

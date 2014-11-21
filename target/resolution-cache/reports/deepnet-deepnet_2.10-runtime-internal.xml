@@ -7,7 +7,7 @@
 		revision="1.0"
 		conf="runtime-internal"
 		confs="compile, runtime, test, provided, optional, compile-internal, runtime-internal, test-internal, plugin, sources, docs, pom, scala-tool"
-		date="20141116013902"/>
+		date="20141120161647"/>
 	<dependencies>
 		<module organisation="org.apache.spark" name="spark-graphx_2.10">
 			<revision name="1.1.0" status="release" pubdate="20140903013512" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://spark.apache.org/" downloaded="false" searched="false" default="false" conf="default(compile), default, compile, runtime, master" position="105">
@@ -1373,6 +1373,13 @@
 				<caller organisation="org.scalanlp" name="breeze-macros_2.10" conf="compile, runtime" rev="2.10.3" rev-constraint-default="2.10.3" rev-constraint-dynamic="2.10.3" callerrev="0.3.1"/>
 				<caller organisation="org.scalamacros" name="quasiquotes_2.10" conf="compile" rev="2.10.3" rev-constraint-default="2.10.3" rev-constraint-dynamic="2.10.3" callerrev="2.0.0-M8"/>
 				<caller organisation="org.spire-math" name="spire_2.10" conf="compile, runtime" rev="2.10.2" rev-constraint-default="2.10.2" rev-constraint-dynamic="2.10.2" callerrev="0.7.4"/>
+				<artifacts>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="com.typesafe" name="config_2.10">
+			<revision name="1.2.1" error="not found" downloaded="false" searched="false" conf="default(compile)" position="-1">
+				<caller organisation="deepnet" name="deepnet_2.10" conf="optional, compile, runtime, runtime-internal" rev="1.2.1" rev-constraint-default="1.2.1" rev-constraint-dynamic="1.2.1" callerrev="1.0"/>
 				<artifacts>
 				</artifacts>
 			</revision>

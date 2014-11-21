@@ -611,9 +611,9 @@
 [debug] 	[NOT REQUIRED] org.scala-sbt#test-agent;0.13.5!test-agent.jar
 [debug] 	[NOT REQUIRED] org.scala-sbt#test-interface;1.0!test-interface.jar
 [debug] 	[NOT REQUIRED] org.scala-sbt#apply-macro;0.13.5!apply-macro.jar
-[debug] :: resolution report :: resolve 1273ms :: artifacts dl 23ms
+[debug] :: resolution report :: resolve 274ms :: artifacts dl 8ms
 [debug] 	report for deepnet#deepnet$sbt_2.10;1.0 default produced in /home/ll/code/DeepNet/target/resolution-cache/reports/deepnet-deepnet$sbt_2.10-default.xml
-[debug] 	resolve done (1273ms resolve - 23ms download)
+[debug] 	resolve done (274ms resolve - 8ms download)
 [debug] Using inline dependencies specified in Scala.
 [debug] :: resolving dependencies :: deepnet#deepnet$sources_2.10;1.0
 [debug] 	confs: [default]
@@ -955,6 +955,6 @@
 [debug] 	[NOT REQUIRED] org.scala-sbt#precompiled-2_8_2;0.13.5!precompiled-2_8_2.jar(src)
 [debug] 	[NOT REQUIRED] org.scala-sbt#precompiled-2_9_2;0.13.5!precompiled-2_9_2.jar(src)
 [debug] 	[NOT REQUIRED] org.scala-sbt#precompiled-2_9_3;0.13.5!precompiled-2_9_3.jar(src)
-[debug] :: resolution report :: resolve 173ms :: artifacts dl 22ms
+[debug] :: resolution report :: resolve 51ms :: artifacts dl 16ms
 [debug] 	report for deepnet#deepnet$sources_2.10;1.0 default produced in /home/ll/code/DeepNet/target/resolution-cache/reports/deepnet-deepnet$sources_2.10-default.xml
-[debug] 	resolve done (173ms resolve - 22ms download)
+[debug] 	resolve done (51ms resolve - 16ms download)
